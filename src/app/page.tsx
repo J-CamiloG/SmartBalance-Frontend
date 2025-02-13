@@ -1,101 +1,106 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useState } from "react"
+import Image from "next/image"
+import { User, Lock, Eye, EyeOff, PiggyBank, Cat } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
+
+export default function HomePage() {
+  const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    // Aquí iría la lógica de autenticación
+    setTimeout(() => setLoading(false), 2000)
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <main className="relative h-screen overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <Image src="/imgs/arena.jpg" alt="Background" fill className="object-cover" priority />
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Contenido */}
+      <div className="relative z-10 h-full p-6 md:p-12 flex flex-col">
+        <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="w-full max-w-md">
+              <div className="min-h-[600px] flex flex-col p-10 rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] relative">
+                <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-[#00FFC2]/30 to-transparent" />
+                <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                <div className="absolute inset-y-0 -left-px w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+                <div className="absolute inset-y-0 -right-px w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+                {/* Logo y título */}
+                <div className="flex items-center flex-col gap-4 pb-8 border-b border-white/10">
+                  <Cat className="text-[#00FFC2] w-20 h-20" />
+                  <h1 className="text-3xl font-bold text-white">Iniciar Sesión</h1>
+                </div>
+
+                <div className="flex-1 flex flex-col justify-center space-y-10">
+                  <form onSubmit={handleSubmit} className="space-y-8">
+                    <div className="space-y-6">
+                      <div className="relative">
+                        <Input
+                          type="text"
+                          placeholder="Usuario"
+                          className="bg-white/5 border-white/10 h-14 pl-12 text-white placeholder:text-zinc-400 focus:bg-white/10 transition-colors"
+                        />
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#00FFC2]" />
+                      </div>
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Contraseña"
+                          className="bg-white/5 border-white/10 h-14 pl-12 pr-12 text-white placeholder:text-zinc-400 focus:bg-white/10 transition-colors"
+                        />
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#00FFC2]" />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-300"
+                        >
+                          {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="remember"
+                        className="border-white/20 data-[state=checked]:bg-[#00FFC2] data-[state=checked]:border-[#00FFC2] bg-white/5"
+                      />
+                      <label htmlFor="remember" className="text-sm text-white">
+                        Recordar datos
+                      </label>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full h-14 bg-[#00FFC2] text-black hover:bg-[#00FFC2]/90 rounded-full text-base font-medium shadow-[0_0_20px_rgba(0,255,194,0.3)] hover:shadow-[0_0_25px_rgba(0,255,194,0.4)] transition-all"
+                      disabled={loading}
+                    >
+                      {loading ? "Iniciando sesión..." : "Iniciar sesión"}
+                    </Button>
+                  </form>
+
+                  <p className="text-sm text-center text-white">
+                    ¿No tienes cuenta?{" "}
+                    <a href="/register" className="text-[#00FFC2] hover:text-[#00FFC2]/80">
+                      Regístrate aquí
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </div>
+    </main>
+  )
 }
