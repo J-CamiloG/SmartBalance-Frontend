@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { User, Lock, Eye, EyeOff, PiggyBank, Cat } from "lucide-react"
+import { User, Lock, Eye, EyeOff, Cat } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -14,7 +14,6 @@ export default function HomePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    // Aquí iría la lógica de autenticación
     setTimeout(() => setLoading(false), 2000)
   }
 
@@ -91,7 +90,7 @@ export default function HomePage() {
 
                   <p className="text-sm text-center text-white">
                     ¿No tienes cuenta?{" "}
-                    <a href="/register" className="text-[#00FFC2] hover:text-[#00FFC2]/80">
+                    <a href="#" className="text-[#00FFC2] hover:text-[#00FFC2]/80">
                       Regístrate aquí
                     </a>
                   </p>
