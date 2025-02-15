@@ -6,19 +6,55 @@ import { User, Lock, Eye, EyeOff, Cat } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Loader } from "@/components/ui/loader"
+import axios from "axios"
+
+
+//types 
+import LoginResponse from "@/types/interface.user";
 
 export default function HomePage() {
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setTimeout(() => setLoading(false), 2000)
+
+    try {
+      const response = await axios.post<LoginResponse>("http://localhost:3001/api/auth/login", formData)
+      console.log("Login exitoso:", {
+        token: response.data.token,
+        usuario: response.data.user.name,
+        email: response.data.user.email,
+        rol: response.data.user.role,
+      })
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error en el login:", error.response?.data || error.message)
+      } else {
+        console.error("Error inesperado:", error)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }))
   }
 
   return (
     <main className="relative h-screen overflow-hidden">
+      {loading && <Loader />}
+
       <div className="absolute inset-0 z-0">
         <Image src="/imgs/arena.jpg" alt="Background" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-black/40" />
@@ -47,7 +83,10 @@ export default function HomePage() {
                       <div className="relative">
                         <Input
                           type="text"
+                          name="email"
                           placeholder="Usuario"
+                          value={formData.email}
+                          onChange={handleChange}
                           className="bg-white/5 border-white/10 h-14 pl-12 text-white placeholder:text-zinc-400 focus:bg-white/10 transition-colors"
                         />
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#00FFC2]" />
@@ -55,7 +94,10 @@ export default function HomePage() {
                       <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}
+                          name="password"
                           placeholder="Contraseña"
+                          value={formData.password}
+                          onChange={handleChange}
                           className="bg-white/5 border-white/10 h-14 pl-12 pr-12 text-white placeholder:text-zinc-400 focus:bg-white/10 transition-colors"
                         />
                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#00FFC2]" />
