@@ -10,7 +10,6 @@ const initialState: AuthState = {
     error: null,
 }
 
-// Async thunks 
 export const Login = createAsyncThunk<LoginResponse, LoginCredentials>(
     "auth/login",
     async (credentials, { rejectWithValue }) => {
